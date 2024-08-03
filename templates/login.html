@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+  <div class="form-group">
+    {{ render_form(form) }}
+  </div>
+  <a href="/">Return Home</a>
+{% endblock %}
