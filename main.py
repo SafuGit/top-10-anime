@@ -13,7 +13,7 @@ load_dotenv()
 db = SQLAlchemy()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///anime.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 db.init_app(app)
 Bootstrap5(app)
 
@@ -49,7 +49,7 @@ class AddForm(FlaskForm):
 
 def create_database():
     with app.app_context():
-        pass
+        db.create_all()
 
 create_database()
 
@@ -112,3 +112,6 @@ def add():
             db.session.add(new_anime)
             db.session.commit()
     return render_template('add.html', form=form)
+
+if __name__ == "__main__":
+    app.run()
