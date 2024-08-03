@@ -13,7 +13,7 @@ load_dotenv()
 db = SQLAlchemy()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("POSTGRES_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 db.init_app(app)
 Bootstrap5(app)
 
