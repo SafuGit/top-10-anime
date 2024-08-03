@@ -1,4 +1,6 @@
 {
+    "buildCommand": "gunicorn main:app",
+    "installCommand": "pip install -r requirements.txt",
     "version": 2,
     "builds": [
         {
