@@ -37,9 +37,19 @@ class LoginForm(FlaskForm):
     password = StringField("Password", validators=[DataRequired()])
     submit = SubmitField("Sign In")
 
+class AddForm(FlaskForm):
+    title = StringField("Anime Title", validators=[DataRequired()])
+    year = StringField("Release Year", validators=[DataRequired()])
+    description = StringField("Description", validators=[DataRequired()])
+    rating = StringField("Rating", validators=[DataRequired()])
+    ranking = StringField("Ranking", validators=[DataRequired()])
+    review = StringField("Review", validators=[DataRequired()])
+    img_url = StringField("Image URL", validators=[DataRequired()])
+    submit = SubmitField("Add")
+
 def create_database():
     with app.app_context():
-        ...
+        pass
 
 create_database()
 
@@ -75,14 +85,33 @@ def login():
     form = LoginForm()
     method = request.args.get("method")
     id = request.args.get("id")
-    print(os.getenv("PASSWORD"))
     if request.method == "POST":
         if form.validate_on_submit() and form.username.data == os.getenv("USERNAME") and form.password.data == os.getenv("PASSWORD"): 
             if method == "update":
                 return redirect(url_for('edit', id=id))
             elif method == "delete":
                 return redirect(url_for('delete', id=id))
+            elif method == "add":
+                return redirect(url_for('add'))
     return render_template("login.html", form=form)
+
+@app.route(os.getenv("ADD_TOKEN"), methods=["GET", "POST"]) #type: ignore
+def add():
+    form = AddForm()
+    if request.method == "POST":
+        if form.validate_on_submit():
+            new_anime = Anime(
+                title = form.title.data,
+                year = form.year.data,
+                description = form.description.data,
+                rating = form.rating.data,
+                ranking = form.ranking.data,
+                review = form.review.data,
+                img_url = form.img_url.data
+            )
+            db.session.add(new_anime)
+            db.session.commit()
+    return render_template('add.html', form=form)
 
 if __name__ == '__main__':
     app.run(debug=True)
